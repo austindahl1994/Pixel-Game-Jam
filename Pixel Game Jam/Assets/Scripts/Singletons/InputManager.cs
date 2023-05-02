@@ -4,15 +4,40 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static InputManager instance;
+    public GameObject player;
+    private Rigidbody2D playerRB;
+
+    [SerializeField] private float moveSpeed = 5;
+    private float horizontalInput;
+    private void Awake()
     {
-        
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+        if (player == null) {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+        playerRB = player.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2 movement = new Vector2 (horizontalInput, 0);
+        movement.Normalize();
+        movement *= moveSpeed;
+
+        playerRB.MovePosition(playerRB.position + movement * Time.fixedDeltaTime);
     }
 }
