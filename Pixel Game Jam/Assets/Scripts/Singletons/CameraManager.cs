@@ -5,9 +5,9 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     public static CameraManager instance;
-    [SerializeField] private GameObject player;
     [SerializeField] private Camera cam;
-
+    GameManager gm;
+    
     private void Awake()
     {
         if (instance == null)
@@ -18,16 +18,18 @@ public class CameraManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        if (player == null) {
-            player = GameObject.FindGameObjectWithTag("Player");
-        }
         if (cam == null) {
             cam = Camera.main;
         }
     }
 
+    private void Start()
+    {
+        gm = GameManager.instance;
+    }
+
     private void Update()
     {
-        cam.gameObject.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y, -10);
+        cam.gameObject.transform.position = new Vector3 (gm.player.transform.position.x, gm.player.transform.position.y, -10);
     }
 }
