@@ -41,3 +41,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Walls
+    uniqueID: 1856304263
+    locked: 0
+  - name: Floor
+    uniqueID: 1065093611
+    locked: 0
+  - name: BG Objects
+    uniqueID: 1277887887
+    locked: 0
+  - name: Top BG Objects
+    uniqueID: 2869688117
+    locked: 0
+  - name: Player
+    uniqueID: 2737209469
+    locked: 0
+  - name: FG Objects
+    uniqueID: 43601027
+    locked: 0
+  - name: Puzzle
+    uniqueID: 1955642569
+    locked: 0
