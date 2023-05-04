@@ -8,6 +8,8 @@ public class InputManager : MonoBehaviour
     private Rigidbody2D playerRB;
     GameManager gm = GameManager.instance;
     DoorManager dm;
+    PuzzleManager pm;
+    UIManager ui;
     public Vector3Int doorPosition;
 
     [SerializeField] private float moveSpeed = 5;
@@ -28,15 +30,31 @@ public class InputManager : MonoBehaviour
     {
         gm = GameManager.instance;
         dm = DoorManager.instance;
+        pm = PuzzleManager.instance;
+        ui = UIManager.instance;    
         playerRB = gm.player.GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        gm.isMovingright = horizontalInput > 0 ? true : false;
+        if (gm.uiActive || gm.isPuzzlin) {
+            gm.playerCanMove = false;
+        }
+        if (horizontalInput > 0) {
+            gm.movingRight();
+        } else if (horizontalInput < 0) {
+            gm.movingLeft();
+        } else {
+            gm.notMoving();
+        }
+
         if (Input.GetKeyDown(KeyCode.E)) {
             interact();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            exit();
         }
     }
 
@@ -55,8 +73,39 @@ public class InputManager : MonoBehaviour
     }
 
     private void interact() {
-        if (gm.isInDoorway && (dm.doorPos != null)) {
+        if (gm.isPuzzlin) { 
+            pm.endPuzzle();
+            gm.playerCanMove = true;
+            return;
+        }
+        if (gm.puzzleAvailable) {
+            gm.isPuzzlin = true;
+            pm.startPuzzle();
+            gm.playerCanMove= false;
+            return;
+        }
+        if (gm.isInDoorway && (dm.doorPos != null) && !gm.playerIsTeleporting) {
             dm.teleport();
         }
+    }
+
+    private void exit() {
+        if (gm.isPuzzlin)
+        {
+            pm.endPuzzle();
+            gm.playerCanMove = true;
+            return;
+        }
+        if (gm.uiActive)
+        {
+            ui.closeSettings();
+            gm.playerCanMove = true;
+        }
+        else {
+            ui.openSettings();
+            gm.playerCanMove = true;
+        }
+
+
     }
 }
