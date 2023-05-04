@@ -37,14 +37,16 @@ public class PuzzleManager : MonoBehaviour
 
     public void startPuzzle()
     {
-        sr = puzzle.gameObject.GetComponent<SpriteRenderer>();
         gm.isPuzzlin = true;
-        puzzle.gameObject.transform.position = gm.player.transform.position;
+        Debug.Log("Starting puzzle with name: " + puzzle.name);
+        sr = puzzle.gameObject.GetComponent<SpriteRenderer>();
         sr.sortingLayerName = "Puzzle";
         puzzle.gameObject.SetActive(true);
+        puzzle.gameObject.transform.position = gm.player.transform.position;
     }
 
-    public void endPuzzle() { 
+    public void endPuzzle() {
+        Debug.Log("Ending puzzle with name: " + puzzle.name);
         gm.isPuzzlin = false;
         puzzle.gameObject.SetActive(false);
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class UIManager : MonoBehaviour
     GameManager gm;
     [SerializeField] private Image image;
     public GameObject settingsScreen;
+    public GameObject noteScreen;
+    public string date;
+    public string para;
+    public string noteName;
     public float fadeDuration = 0.2f;
     public float fadeWaitTime = 0.05f;
     private void Awake()
@@ -37,6 +42,7 @@ public class UIManager : MonoBehaviour
             settingsScreen = GameObject.Find("Canvas/Settings");
             settingsScreen.SetActive(false);
         }
+
     }
 
     public IEnumerator FadeScreen()
@@ -79,7 +85,24 @@ public class UIManager : MonoBehaviour
     }
 
     public void closeSettings () {
-        gm.uiActive = false;
         settingsScreen.SetActive(false);
+    }
+
+    public void showNote() {
+        noteScreen.transform.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = date;
+        noteScreen.transform.GetChild(1).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = para;
+        noteScreen.transform.GetChild(2).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = noteName;
+        gm.uiActive = true;
+        noteScreen.gameObject.SetActive(true);
+    }
+
+    public void closeNote() {
+        noteScreen.gameObject.SetActive(false);
+    }
+
+    public void closeUI() { 
+        closeNote();
+        closeSettings();
+        gm.uiActive = false;
     }
 }
