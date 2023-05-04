@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public bool puzzleAvailable;
     public bool isPuzzlin;
     public bool uiActive;
+    public bool noteAvailable;
     private void Awake()
     {
         if (instance == null)
@@ -39,10 +40,10 @@ public class GameManager : MonoBehaviour
         }
         playerCanMove = true;
         isInDoorway = false;
-        showPaths = true;
         isFacingRight = false;
         hasLeftDoorway = true;
         puzzleAvailable = false;
+        noteAvailable = false;
     }
 
     private void Start()
@@ -53,6 +54,9 @@ public class GameManager : MonoBehaviour
     }
 
     public void movingRight() {
+        if (!playerCanMove) {
+            return;
+        }
         playerAnim.SetBool("Walking", true);
         playerSprite.flipX = true;
         isFacingRight =true;
@@ -60,6 +64,10 @@ public class GameManager : MonoBehaviour
     }
 
     public void movingLeft() {
+        if (!playerCanMove)
+        {
+            return;
+        }
         playerAnim.SetBool("Walking", true);
         playerSprite.flipX = false;
         isFacingRight = false;

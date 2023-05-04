@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DoorManager : MonoBehaviour
 {
@@ -12,6 +13,12 @@ public class DoorManager : MonoBehaviour
     Vector3 toBeMoved;
     GameManager gm;
     UIManager ui;
+    SceneManage sm;
+    public FloorPaths firstFloor;
+    public FloorPaths secondFloor;
+    public FloorPaths thirdFloor;
+    public FloorPaths fourthFloor;
+    private FloorPaths currentFloor;
     private void Awake()
     {
         if (instance == null)
@@ -27,12 +34,8 @@ public class DoorManager : MonoBehaviour
     {
         gm = GameManager.instance;
         ui = UIManager.instance;
-        Vector3Int tile1Position = new Vector3Int(-11, -8, 0);
-        Vector3Int tile2Position = new Vector3Int(-8, -0, 0);
-        Vector3Int tile3Position = new Vector3Int(-4, 0, 0);
-        Vector3Int tile4Position = new Vector3Int(15, -8, 0);
-        tilePairs.Add(tile1Position, tile2Position);
-        tilePairs.Add(tile3Position, tile4Position);
+        sm = SceneManage.instance;
+        setPaths();
         showPaths();
     }
 
@@ -84,5 +87,38 @@ public class DoorManager : MonoBehaviour
         gm.playerIsTeleporting = true;
         gm.playerCanMove = false;
         yield return StartCoroutine(ui.FadeScreen());
+    }
+
+    private void setPaths()
+    {
+        string sceneName = sm.getSceneName();
+
+        switch (sceneName) {
+            case "First Floor":
+                //Debug.Log("It is first floor");
+                currentFloor = firstFloor;
+                break;
+            case "Second Floor":
+                //Debug.Log("It is second floor");
+                currentFloor = secondFloor;
+                break;
+            case "Third Floor":
+                //Debug.Log("It is third floor");
+                currentFloor = thirdFloor;
+                break;
+            case "Fourth Floor":
+                //Debug.Log("It is fourth floor");
+                currentFloor = fourthFloor;
+                break;
+            default:
+                //Debug.Log("No floor currently set");
+                break;
+        }
+
+        foreach (Vector2Tuple tuple in currentFloor.path) {
+            Vector3Int start = new Vector3Int((int)tuple.start.x, (int)tuple.start.y, 0);
+            Vector3Int end = new Vector3Int((int)tuple.end.x, (int)tuple.end.y, 0);
+            tilePairs.Add(start, end);
+        }
     }
 }

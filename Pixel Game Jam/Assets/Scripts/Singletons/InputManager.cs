@@ -73,6 +73,17 @@ public class InputManager : MonoBehaviour
     }
 
     private void interact() {
+        if (gm.noteAvailable && !gm.uiActive)
+        {
+            ui.showNote();
+            gm.uiActive = true;
+            return;
+        }
+        else { 
+            ui.closeNote();
+            gm.uiActive = false;
+            gm.playerCanMove = true; //figure this out later
+        }
         if (gm.isPuzzlin) { 
             pm.endPuzzle();
             gm.playerCanMove = true;
@@ -98,7 +109,7 @@ public class InputManager : MonoBehaviour
         }
         if (gm.uiActive)
         {
-            ui.closeSettings();
+            ui.closeUI();
             gm.playerCanMove = true;
         }
         else {

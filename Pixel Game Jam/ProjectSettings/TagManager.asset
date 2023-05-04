@@ -59,6 +59,12 @@ TagManager:
   - name: FG Objects
     uniqueID: 43601027
     locked: 0
+  - name: PuzzleBG
+    uniqueID: 2589502619
+    locked: 0
   - name: Puzzle
     uniqueID: 1955642569
+    locked: 0
+  - name: Text
+    uniqueID: 3069374567
     locked: 0
