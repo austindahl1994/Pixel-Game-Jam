@@ -44,7 +44,13 @@ TagManager:
   - name: Walls
     uniqueID: 1856304263
     locked: 0
-  - name: Floor
+  - name: WallDecorations
+    uniqueID: 3104365897
+    locked: 0
+  - name: WallDecorations2
+    uniqueID: 620010439
+    locked: 0
+  - name: Doors
     uniqueID: 1065093611
     locked: 0
   - name: BG Objects
