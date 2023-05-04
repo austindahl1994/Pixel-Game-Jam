@@ -22,9 +22,7 @@ public class DoorTiles : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player moved in front of door");
             Vector3Int tilePosition = tilemap.WorldToCell(collision.transform.position);
-            // Adjust the tile position based on the player's position relative to the door
             if (gm.isMovingright)
             {
                 tilePosition.x++;
@@ -33,10 +31,8 @@ public class DoorTiles : MonoBehaviour
             {
                 tilePosition.x--;
             }
-            Debug.Log("tilePosition position: " + tilePosition);
             gm.isInDoorway = true;
             dm.doorPos = tilePosition;
-            //dm.teleport(tilePosition);
         }
     }
 
@@ -44,8 +40,8 @@ public class DoorTiles : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player exited door");
             gm.isInDoorway = false;
+            gm.hasLeftDoorway = true;
         }
     }
 
