@@ -6,10 +6,9 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager instance;
-    private SpriteRenderer sr;
     GameManager gm;
     public GameObject puzzle;
-    public GameObject puzzleHolder;
+    private bool isPuzzlin;
     private void Awake()
     {
         if (instance == null)
@@ -20,34 +19,26 @@ public class PuzzleManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        isPuzzlin = false;
     }
 
     private void Start()
     {
         gm = GameManager.instance;
-        disableChildren(puzzleHolder);
-    }
-
-    private void disableChildren(GameObject parent)
-    {
-        foreach (Transform child in parent.transform) { 
-            child.gameObject.SetActive(false);
-        }
     }
 
     public void startPuzzle()
     {
-        gm.isPuzzlin = true;
+        isPuzzlin = true;
         Debug.Log("Starting puzzle with name: " + puzzle.name);
-        sr = puzzle.gameObject.GetComponent<SpriteRenderer>();
-        sr.sortingLayerName = "Puzzle";
         puzzle.gameObject.SetActive(true);
         puzzle.gameObject.transform.position = gm.player.transform.position;
     }
 
     public void endPuzzle() {
+        if (!isPuzzlin) { return; }
         Debug.Log("Ending puzzle with name: " + puzzle.name);
-        gm.isPuzzlin = false;
+        isPuzzlin = false;
         puzzle.gameObject.SetActive(false);
     }
 }

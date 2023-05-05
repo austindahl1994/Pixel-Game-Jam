@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     public string noteName;
     public float fadeDuration = 0.2f;
     public float fadeWaitTime = 0.05f;
+    private bool uiOpen;
+    private bool uiSettingsOpen;
     private void Awake()
     {
         if (instance == null)
@@ -26,6 +28,8 @@ public class UIManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        uiOpen = false;
+        uiSettingsOpen = false;
     }
 
     private void Start()
@@ -72,7 +76,7 @@ public class UIManager : MonoBehaviour
             t += Time.deltaTime;
             float alpha = Mathf.Lerp(1.0f, 0.0f, t / fadeDuration);
             if (t >= fadeDuration / 2) { 
-                gm.playerCanMove = true;
+                gm.playerIsTeleporting = false;
             }
             image.color = new Color(0.0f, 0.0f, 0.0f, alpha);
             yield return null;
@@ -80,29 +84,27 @@ public class UIManager : MonoBehaviour
     }
 
     public void openSettings() { 
-        gm.uiActive = true;
         settingsScreen.SetActive(true);
+        uiSettingsOpen = true;
     }
 
     public void closeSettings () {
+        if (!uiSettingsOpen) { return; }
         settingsScreen.SetActive(false);
+        uiSettingsOpen = false;
     }
 
     public void showNote() {
+        uiOpen = true;
         noteScreen.transform.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = date;
         noteScreen.transform.GetChild(1).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = para;
         noteScreen.transform.GetChild(2).gameObject.GetComponentInChildren<TextMeshProUGUI>().text = noteName;
-        gm.uiActive = true;
         noteScreen.gameObject.SetActive(true);
     }
 
     public void closeNote() {
+        if (!uiOpen) { return; }
         noteScreen.gameObject.SetActive(false);
-    }
-
-    public void closeUI() { 
-        closeNote();
-        closeSettings();
-        gm.uiActive = false;
+        uiOpen = false;
     }
 }

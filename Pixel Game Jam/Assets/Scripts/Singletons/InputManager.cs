@@ -10,7 +10,12 @@ public class InputManager : MonoBehaviour
     DoorManager dm;
     PuzzleManager pm;
     UIManager ui;
-    public Vector3Int doorPosition;
+    TextManager tm;
+    InventoryManager invm;
+    public string state;
+    public bool inInteraction;
+    public bool inSettings;
+    public bool goingThroughTextBox;
 
     [SerializeField] private float moveSpeed = 5;
     private float horizontalInput;
@@ -24,6 +29,8 @@ public class InputManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        inSettings = false;
+        goingThroughTextBox = false;
     }
 
     private void Start()
@@ -32,14 +39,23 @@ public class InputManager : MonoBehaviour
         dm = DoorManager.instance;
         pm = PuzzleManager.instance;
         ui = UIManager.instance;    
+        tm = TextManager.instance;
+        invm = InventoryManager.instance;
         playerRB = gm.player.GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        if (gm.uiActive || gm.isPuzzlin) {
+        if (gm.textFinished) {
+            goingThroughTextBox = false;
+        }
+        if (inInteraction || gm.playerIsTeleporting || inSettings || goingThroughTextBox)
+        {
             gm.playerCanMove = false;
+        }
+        else {
+            gm.playerCanMove = true;
         }
         if (horizontalInput > 0) {
             gm.movingRight();
@@ -73,50 +89,72 @@ public class InputManager : MonoBehaviour
     }
 
     private void interact() {
-        if (gm.noteAvailable && !gm.uiActive)
+        if (inSettings) {
+            Debug.Log("Settings is currently running, cannot interact");
+            return; 
+        }
+        if (goingThroughTextBox) {
+            tm.showNextText();
+        }
+        if (inInteraction)
         {
-            ui.showNote();
-            gm.uiActive = true;
-            return;
+            closeAll();
+            inInteraction = false;
         }
         else { 
-            ui.closeNote();
-            gm.uiActive = false;
-            gm.playerCanMove = true; //figure this out later
-        }
-        if (gm.isPuzzlin) { 
-            pm.endPuzzle();
-            gm.playerCanMove = true;
-            return;
-        }
-        if (gm.puzzleAvailable) {
-            gm.isPuzzlin = true;
-            pm.startPuzzle();
-            gm.playerCanMove= false;
-            return;
-        }
-        if (gm.isInDoorway && (dm.doorPos != null) && !gm.playerIsTeleporting) {
-            dm.teleport();
+            checkAvailableInteractable();
         }
     }
 
     private void exit() {
-        if (gm.isPuzzlin)
+        if (inSettings) { 
+            ui.closeSettings();
+            inSettings = false;
+        } else if (inInteraction)
         {
-            pm.endPuzzle();
-            gm.playerCanMove = true;
-            return;
+            closeAll();
         }
-        if (gm.uiActive)
-        {
-            ui.closeUI();
-            gm.playerCanMove = true;
-        }
-        else {
+        else { 
             ui.openSettings();
-            gm.playerCanMove = true;
+            inSettings = true;
         }
+    }
 
+    private void closeAll() { 
+        ui.closeNote();
+        pm.endPuzzle();
+        invm.closeInventory();
+        inInteraction = false;
+    }
 
+    private void checkAvailableInteractable() {
+        switch (state) {
+            case "note":
+                ui.showNote();
+                inInteraction = true;
+                break;
+            case "puzzle":
+                pm.startPuzzle();
+                inInteraction = true;
+                break;
+            case "text":
+                gm.textFinished = false;
+                tm.displayText();
+                goingThroughTextBox = true;
+                break;
+            case "item":
+                invm.addToInventory();
+                inInteraction = true;
+                break;
+            case "door":
+                dm.teleport();
+                break;
+            case "none":
+                Debug.Log("No interactable available");
+                break;
+            default:
+                Debug.Log("Nothing available yet");
+                break;
+        }
     }
 }
