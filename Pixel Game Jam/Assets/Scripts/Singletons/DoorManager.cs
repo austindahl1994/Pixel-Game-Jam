@@ -85,7 +85,6 @@ public class DoorManager : MonoBehaviour
     private IEnumerator teleportPause()
     {
         gm.playerIsTeleporting = true;
-        gm.playerCanMove = false;
         yield return StartCoroutine(ui.FadeScreen());
     }
 

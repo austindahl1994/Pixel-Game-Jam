@@ -8,6 +8,7 @@ public class DoorTiles : MonoBehaviour
     Tilemap tilemap;
     GameManager gm;
     DoorManager dm;
+    InputManager im;
     private void Awake()
     {
         tilemap = GetComponent<Tilemap>();
@@ -17,6 +18,7 @@ public class DoorTiles : MonoBehaviour
     {
         gm = GameManager.instance;
         dm = DoorManager.instance;
+        im = InputManager.instance;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -33,6 +35,7 @@ public class DoorTiles : MonoBehaviour
             }
             gm.isInDoorway = true;
             dm.doorPos = tilePosition;
+            im.state = "door";
         }
     }
 
@@ -42,6 +45,7 @@ public class DoorTiles : MonoBehaviour
         {
             gm.isInDoorway = false;
             gm.hasLeftDoorway = true;
+            im.state = "none";
         }
     }
 

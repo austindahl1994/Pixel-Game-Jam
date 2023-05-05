@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public BoxCollider2D playerBC;
 
     public Vector3 whereToTeleportPlayer;
-    public bool colliderDisablingCoroutineRunning = false;
     public bool playerIsTeleporting;
     public bool showPaths;
     public bool playerCanMove;
@@ -20,10 +19,8 @@ public class GameManager : MonoBehaviour
     public bool isFacingRight;
     public bool isInDoorway;
     public bool hasLeftDoorway;
-    public bool puzzleAvailable;
-    public bool isPuzzlin;
-    public bool uiActive;
-    public bool noteAvailable;
+    public bool pinSolved;
+    public bool textFinished;
     private void Awake()
     {
         if (instance == null)
@@ -38,12 +35,11 @@ public class GameManager : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player");
         }
-        playerCanMove = true;
         isInDoorway = false;
         isFacingRight = false;
         hasLeftDoorway = true;
-        puzzleAvailable = false;
-        noteAvailable = false;
+        pinSolved = false;
+        textFinished = true;
     }
 
     private void Start()
