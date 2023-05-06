@@ -7,12 +7,12 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public GameObject player;
+    public GameObject playerPrefab;
     private Animator playerAnim;
     private SpriteRenderer playerSprite;
     public BoxCollider2D playerBC;
 
     public Vector3 whereToTeleportPlayer;
-    public bool colliderDisablingCoroutineRunning = false;
     public bool playerIsTeleporting;
     public bool showPaths;
     public bool playerCanMove;
@@ -20,30 +20,32 @@ public class GameManager : MonoBehaviour
     public bool isFacingRight;
     public bool isInDoorway;
     public bool hasLeftDoorway;
-    public bool puzzleAvailable;
-    public bool isPuzzlin;
-    public bool uiActive;
-    public bool noteAvailable;
+
+    public bool pinSolved;
+
+    public bool textFinished;
+
+    public Vector3 scenePlacePlayer;
+    public bool sceneSwapping;
+    public int currentFloor;
     private void Awake()
     {
+        Debug.Log("Awake called");
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(this.gameObject);
         }
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player");
-        }
-        playerCanMove = true;
+        player = GameObject.FindGameObjectWithTag("Player");
         isInDoorway = false;
         isFacingRight = false;
         hasLeftDoorway = true;
-        puzzleAvailable = false;
-        noteAvailable = false;
+        pinSolved = true;
+        textFinished = true;
     }
 
     private void Start()
@@ -87,5 +89,12 @@ public class GameManager : MonoBehaviour
         player.gameObject.transform.position = new Vector3(whereToTeleportPlayer.x + 0.5f, whereToTeleportPlayer.y, 0);
         hasLeftDoorway = false;
         playerIsTeleporting = false;
+    }
+
+    public void placePlayer() {
+        playerBC.enabled = false;
+        player.gameObject.transform.position = scenePlacePlayer;
+        playerBC.enabled = true;
+        sceneSwapping = false;
     }
 }

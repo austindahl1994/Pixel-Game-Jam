@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,21 +16,11 @@ public class DoorManager : MonoBehaviour
     GameManager gm;
     UIManager ui;
     SceneManage sm;
-    public FloorPaths firstFloor;
-    public FloorPaths secondFloor;
     public FloorPaths thirdFloor;
-    public FloorPaths fourthFloor;
-    private FloorPaths currentFloor;
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        Debug.Log("Doormanager opened");
+        instance = this;
     }
     private void Start()
     {
@@ -36,26 +28,33 @@ public class DoorManager : MonoBehaviour
         ui = UIManager.instance;
         sm = SceneManage.instance;
         setPaths();
-        showPaths();
     }
 
     private void showPaths() { 
         if (!gm.showPaths) { return; }
-        foreach (KeyValuePair<Vector3Int, Vector3Int> pair in tilePairs) {
+        for (int i = 0; i < thirdFloor.path.Count(); i++) {
             GameObject testPath = Instantiate(path);
-            testPath.gameObject.transform.GetChild(0).transform.position 
-                = new Vector2(pair.Key.x + 0.5f, pair.Key.y);
-            testPath.gameObject.transform.GetChild(1).transform.position 
-                = new Vector2(pair.Value.x + 0.5f, pair.Value.y);
+            testPath.gameObject.transform.GetChild(0).transform.position
+                = new Vector2(thirdFloor.path[i].start.x, thirdFloor.path[i].start.y);
+            testPath.gameObject.transform.GetChild(1).transform.position
+                = new Vector2(thirdFloor.path[i].end.x, thirdFloor.path[i].end.y);
         }
     }
 
     public void teleport()
     {
+        Debug.Log("Teleport called");
+        Debug.Log("Door position is: " + doorPos);
+        if (!gm.pinSolved) {
+            Debug.Log("Pin not solved, cant teleport");
+            return;
+        }
         if (gm.playerIsTeleporting) {
+            Debug.Log("teleporting already, cant teleport");
             return;
         }
         if (!gm.hasLeftDoorway) {
+            Debug.Log("player hasent left doorway");
             if (gm.whereToTeleportPlayer == doorPos)
             {
                 gm.whereToTeleportPlayer = toBeMoved;
@@ -66,6 +65,8 @@ public class DoorManager : MonoBehaviour
             StartCoroutine(teleportPause());
             return;
         }
+        testing();
+        /*
         if (tilePairs.ContainsKey(doorPos)) {
             toBeMoved = new Vector3(tilePairs[doorPos].x, tilePairs[doorPos].y, 0);
             gm.whereToTeleportPlayer = toBeMoved;
@@ -79,20 +80,39 @@ public class DoorManager : MonoBehaviour
                     StartCoroutine(teleportPause());
                 }
             }
+        }*/
+    }
+
+    private void testing() {
+        for (int i = 0; i < thirdFloor.path.Count(); i++)
+        {
+            Debug.Log(doorPos.x+ " " +  doorPos.y);
+            if (doorPos.x == thirdFloor.path[i].start.x && doorPos.y == thirdFloor.path[i].start.y) {
+                Debug.Log("They match, teleporting woohoo!");
+                toBeMoved = new Vector2(thirdFloor.path[i].end.x, thirdFloor.path[i].end.y);
+                gm.whereToTeleportPlayer = toBeMoved;
+                StartCoroutine(teleportPause());
+            } else if (doorPos.x == thirdFloor.path[i].end.x && doorPos.y == thirdFloor.path[i].end.y) {
+                Debug.Log("They match, teleporting woohoo!");
+                toBeMoved = new Vector2(thirdFloor.path[i].start.x, thirdFloor.path[i].start.y);
+                gm.whereToTeleportPlayer = toBeMoved;
+                StartCoroutine(teleportPause());
+            }
         }
     }
 
     private IEnumerator teleportPause()
     {
         gm.playerIsTeleporting = true;
-        gm.playerCanMove = false;
         yield return StartCoroutine(ui.FadeScreen());
     }
 
-    private void setPaths()
+    public void setPaths()
     {
-        string sceneName = sm.getSceneName();
-
+        Debug.Log("Set paths called");
+        tilePairs.Clear();
+        //string sceneName = sm.getSceneName();
+        /*
         switch (sceneName) {
             case "First Floor":
                 //Debug.Log("It is first floor");
@@ -106,19 +126,10 @@ public class DoorManager : MonoBehaviour
                 //Debug.Log("It is third floor");
                 currentFloor = thirdFloor;
                 break;
-            case "Fourth Floor":
-                //Debug.Log("It is fourth floor");
-                currentFloor = fourthFloor;
-                break;
             default:
                 //Debug.Log("No floor currently set");
                 break;
-        }
-
-        foreach (Vector2Tuple tuple in currentFloor.path) {
-            Vector3Int start = new Vector3Int((int)tuple.start.x, (int)tuple.start.y, 0);
-            Vector3Int end = new Vector3Int((int)tuple.end.x, (int)tuple.end.y, 0);
-            tilePairs.Add(start, end);
-        }
+        }*/
+        showPaths();
     }
 }

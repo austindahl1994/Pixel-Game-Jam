@@ -6,48 +6,40 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     public static PuzzleManager instance;
-    private SpriteRenderer sr;
     GameManager gm;
+    InputManager im;
     public GameObject puzzle;
-    public GameObject puzzleHolder;
+    public bool isPuzzlin;
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        instance = this;
+        isPuzzlin = false;
+
     }
 
     private void Start()
     {
         gm = GameManager.instance;
-        disableChildren(puzzleHolder);
-    }
-
-    private void disableChildren(GameObject parent)
-    {
-        foreach (Transform child in parent.transform) { 
-            child.gameObject.SetActive(false);
-        }
+        im = InputManager.instance;
     }
 
     public void startPuzzle()
     {
-        gm.isPuzzlin = true;
+        isPuzzlin = true;
+        gm.player.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
         Debug.Log("Starting puzzle with name: " + puzzle.name);
-        sr = puzzle.gameObject.GetComponent<SpriteRenderer>();
-        sr.sortingLayerName = "Puzzle";
+        gm.playerBC.enabled = false;
         puzzle.gameObject.SetActive(true);
         puzzle.gameObject.transform.position = gm.player.transform.position;
+        new Vector3(gm.player.transform.position.x - 5, gm.player.transform.position.y, 0);
     }
 
     public void endPuzzle() {
+        if (!isPuzzlin) { return; }
         Debug.Log("Ending puzzle with name: " + puzzle.name);
-        gm.isPuzzlin = false;
+        isPuzzlin = false;
         puzzle.gameObject.SetActive(false);
+        gm.player.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        gm.playerBC.enabled = true;
     }
 }

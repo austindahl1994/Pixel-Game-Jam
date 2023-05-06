@@ -6,20 +6,18 @@ using UnityEngine.SceneManagement;
 public class SceneManage : MonoBehaviour
 {
     public static SceneManage instance;
+    public string floorToLoad;
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        instance = this;
     }
 
     public string getSceneName() {
         return SceneManager.GetActiveScene().name;
+    }
+
+    public void loadScene() {
+        SceneManager.LoadScene(floorToLoad);
     }
 }
