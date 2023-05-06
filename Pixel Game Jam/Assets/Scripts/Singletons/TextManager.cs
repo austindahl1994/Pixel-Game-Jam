@@ -15,14 +15,7 @@ public class TextManager : MonoBehaviour
     private int counter;
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        instance = this;
         textOpen = false;
         interactTimes = 0;
         counter = 0;

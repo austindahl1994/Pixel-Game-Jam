@@ -6,12 +6,13 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager instance;
     private Rigidbody2D playerRB;
-    GameManager gm = GameManager.instance;
+    GameManager gm;
     DoorManager dm;
     PuzzleManager pm;
     UIManager ui;
     TextManager tm;
     InventoryManager invm;
+    SceneManage sm;
     public string state;
     public bool inInteraction;
     public bool inSettings;
@@ -21,14 +22,7 @@ public class InputManager : MonoBehaviour
     private float horizontalInput;
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        instance = this;
         inSettings = false;
         goingThroughTextBox = false;
     }
@@ -41,6 +35,7 @@ public class InputManager : MonoBehaviour
         ui = UIManager.instance;    
         tm = TextManager.instance;
         invm = InventoryManager.instance;
+        sm = SceneManage.instance;
         playerRB = gm.player.GetComponent<Rigidbody2D>();
     }
 
@@ -50,7 +45,7 @@ public class InputManager : MonoBehaviour
         if (gm.textFinished) {
             goingThroughTextBox = false;
         }
-        if (inInteraction || gm.playerIsTeleporting || inSettings || goingThroughTextBox)
+        if (inInteraction || gm.playerIsTeleporting || inSettings || goingThroughTextBox || gm.sceneSwapping)
         {
             gm.playerCanMove = false;
         }
@@ -64,7 +59,6 @@ public class InputManager : MonoBehaviour
         } else {
             gm.notMoving();
         }
-
         if (Input.GetKeyDown(KeyCode.E)) {
             interact();
         }
@@ -72,6 +66,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape)) {
             exit();
         }
+
     }
 
     private void FixedUpdate()
