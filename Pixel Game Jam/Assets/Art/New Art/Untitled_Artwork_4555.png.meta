@@ -103,112 +103,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: Untitled_Artwork_4555_0
-      rect:
-        serializedVersion: 2
-        x: 17
-        y: 193
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7d8679d614f0e1d499929c1ce1760625
-      internalID: 127825121
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Untitled_Artwork_4555_1
-      rect:
-        serializedVersion: 2
-        x: 99
-        y: 192
-        width: 97
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f834e86e19a0d054ab24d5555b620672
-      internalID: -412381979
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Untitled_Artwork_4555_2
-      rect:
-        serializedVersion: 2
-        x: 13
-        y: 129
-        width: 127
-        height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 59bb4ec83f9d117418dff907a99977d1
-      internalID: 2043353253
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Untitled_Artwork_4555_3
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 20
-        width: 57
-        height: 106
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e7807c4190761d14eae85e0ae770461c
-      internalID: 395587543
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Untitled_Artwork_4555_4
-      rect:
-        serializedVersion: 2
-        x: 75
-        y: 84
-        width: 82
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1a60b70748013f7479d1ad95cb4f6cfc
-      internalID: -186991962
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
@@ -219,12 +114,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Untitled_Artwork_4555_0: 127825121
-      Untitled_Artwork_4555_1: -412381979
-      Untitled_Artwork_4555_2: 2043353253
-      Untitled_Artwork_4555_3: 395587543
-      Untitled_Artwork_4555_4: -186991962
+    nameFileIdTable: {}
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -34,8 +34,12 @@ public class PuzzleInteractable : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player")) {
-            sr.color = new Color(133, 133, 133, 255);
             pm.puzzle = puzzle;
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                pm.startPuzzle();
+            }
+            sr.color = new Color(133, 133, 133, 255);
             im.state = "puzzle";
         }
     }
@@ -45,12 +49,6 @@ public class PuzzleInteractable : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             sr.color = originalColor;
-            pm.puzzle = null;
-            im.state = "none";
         }
-    }
-
-    private void startPuzzling() { 
-        
     }
 }

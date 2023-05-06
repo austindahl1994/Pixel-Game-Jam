@@ -5,12 +5,26 @@ using UnityEngine;
 
 public class pinPad : MonoBehaviour
 {
-    public Transform reader;
+    AudioManager am;
+
     [SerializeField] private List<int> nums = new List<int>();
     [SerializeField] private List<Sprite> spriteNumbers = new List<Sprite>();
     [SerializeField] private List<int> correctPin = new List<int>();
     [SerializeField] private List<int> evilPin = new List<int>();
+
+    public AudioClip errorClip;
+    public AudioClip correctClip;
+    public AudioClip evilClip;
+    
+    [SerializeField] private float originalVolumeError;
+    [SerializeField] private float originalVolumeCorrect;
+    [SerializeField] private float originalVolumeEvil;
+
     [SerializeField] private float flashDuration;
+    [SerializeField] private float pitchAmount;
+
+    public Transform reader;
+    private AudioSource audioSource;
     public GameObject stupidGreenCover;
     public bool animationFinished;
     public bool animationStarted;
@@ -24,11 +38,20 @@ public class pinPad : MonoBehaviour
         if (flashDuration == 0) {
             flashDuration = 0.1f;
         }
+        am = AudioManager.instance;
         originalColor = new Color(0, 255, 0, 255);
         evilBeenPlayed = false;
         animationFinished = false;
         animationStarted = false;
         stupidGreenCover.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            this.gameObject.SetActive(false);
+        }
     }
     public void buttonPushed(int buttonNumber) { 
         if (buttonNumber < 9) {
@@ -85,7 +108,7 @@ public class pinPad : MonoBehaviour
                 StartCoroutine(FlashSprite(originalColor));
                 return;
             }
-            StartCoroutine(playEvil());
+            StartCoroutine(playEvilAnim());
         }
         else {
             StartCoroutine(FlashSprite(originalColor));
@@ -151,7 +174,7 @@ public class pinPad : MonoBehaviour
 
         isFlashing = true;
         originalColor = reader.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color;
-
+        playErrorSFX();
         for (int i = 0; (i < reader.childCount - 2); i++)
         {
             reader.GetChild(i).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
@@ -179,16 +202,18 @@ public class pinPad : MonoBehaviour
     }
 
     private void correct() {
+        playCorrectSFX();
         stupidGreenCover.SetActive(true);
         GameManager.instance.pinSolved = true;
     }
 
-    private IEnumerator playEvil() {
+    private IEnumerator playEvilAnim() {
+        
         animationStarted = true;
         evilBeenPlayed = true;
         gameObject.GetComponentInChildren<pinButton>().canBePressed = false;
         clearButton();
-
+        playEvilSFX();
         Animator anim = reader.GetChild(reader.childCount - 2).gameObject.GetComponent<Animator>();
         SpriteRenderer sr = reader.GetChild(reader.childCount - 2).gameObject.GetComponent<SpriteRenderer>();
         sr.color = Color.white;
@@ -203,5 +228,36 @@ public class pinPad : MonoBehaviour
         SpriteRenderer sr = reader.GetChild(reader.childCount - 2).gameObject.GetComponent<SpriteRenderer>();
         sr.color = Color.black;
         Debug.Log("Set black called");
+    }
+
+    private void playCorrectSFX() {
+        audioSource.clip = correctClip;
+        if (audioSource.clip != null)
+        {
+            audioSource.pitch = 2.0f;
+            audioSource.volume = originalVolumeCorrect * am.globalSFXVolume;
+            audioSource.Play();
+        }
+    }
+
+    private void playEvilSFX() {
+        audioSource.clip = evilClip;
+        if (audioSource.clip != null)
+        {
+            audioSource.pitch = 2.5f;
+            Debug.Log("Pitch is: " + audioSource.pitch);
+            audioSource.volume = originalVolumeEvil * am.globalSFXVolume;
+            audioSource.Play();
+        }
+    }
+
+    private void playErrorSFX() {
+        audioSource.pitch = 1.0f;
+        audioSource.clip = errorClip;
+        if (audioSource.clip != null)
+        {
+            audioSource.volume = originalVolumeError * am.globalSFXVolume;
+            audioSource.Play();
+        }
     }
 }
