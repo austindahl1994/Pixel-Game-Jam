@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     private SpriteRenderer playerSprite;
     public BoxCollider2D playerBC;
 
+    AudioManager am;
+
     public Vector3 whereToTeleportPlayer;
     public bool playerIsTeleporting;
     public bool showPaths;
@@ -22,12 +24,23 @@ public class GameManager : MonoBehaviour
     public bool hasLeftDoorway;
 
     public bool pinSolved;
+    public bool vialsSolved;
+    [SerializeField] private GameObject door1;
+    public bool computerSolved;
+    [SerializeField] private GameObject door2;
+
+    public List<int> currentComputers = new List<int>();
+    public List<int> compCorrectCode = new List<int>();
 
     public bool textFinished;
 
     public Vector3 scenePlacePlayer;
     public bool sceneSwapping;
     public int currentFloor;
+
+    [SerializeField] private AudioClip victory;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject corpse;
     private void Awake()
     {
         Debug.Log("Awake called");
@@ -44,15 +57,23 @@ public class GameManager : MonoBehaviour
         isInDoorway = false;
         isFacingRight = false;
         hasLeftDoorway = true;
-        pinSolved = true;
+        pinSolved = false;
+        computerSolved = false;
+        vialsSolved = false;
         textFinished = true;
     }
 
     private void Start()
     {
+        am = AudioManager.instance;
         playerAnim = player.GetComponent<Animator>();
         playerSprite = player.GetComponent<SpriteRenderer>();
         playerBC = player.GetComponent<BoxCollider2D>();
+        compCorrectCode.Add(7);
+        compCorrectCode.Add(4);
+        compCorrectCode.Add(2);
+        compCorrectCode.Add(6);
+        turnOnComputer(1);
     }
 
     public void movingRight() {
@@ -96,5 +117,49 @@ public class GameManager : MonoBehaviour
         player.gameObject.transform.position = scenePlacePlayer;
         playerBC.enabled = true;
         sceneSwapping = false;
+    }
+
+    public void turnOnComputer(int num) {
+        currentComputers.Add(num);
+        checkComputerValues();
+    }
+
+    public void turnOffComputer(int num) {
+        currentComputers.Remove(num);
+        checkComputerValues();
+    }
+
+    public void vialPuzzleSolved()
+    {
+        corpse.gameObject.SetActive(false);
+        door1.gameObject.SetActive(false);
+    }
+
+    public void checkComputerValues()
+    {
+        if (currentComputers.Count != 4) {
+            return;
+        }
+        if (!(currentComputers.Contains(7) && currentComputers.Contains(4) &&
+          currentComputers.Contains(6) && currentComputers.Contains(2)))
+        {
+            Debug.Log("Computers not matching yet");
+            return;
+        }
+        Debug.Log("You've won the game!");
+        door2.gameObject.SetActive(false);
+        playCorrectSFX();
+    }
+
+    private void playCorrectSFX()
+    {
+        audioSource.clip = victory;
+        if (audioSource.clip != null)
+        {
+            audioSource.pitch = 1.0f;
+            audioSource.volume = 1 * am.globalSFXVolume;
+            audioSource.loop = false;
+            audioSource.Play();
+        }
     }
 }

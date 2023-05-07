@@ -19,7 +19,6 @@ public class DoorManager : MonoBehaviour
     public FloorPaths thirdFloor;
     private void Awake()
     {
-        Debug.Log("Doormanager opened");
         instance = this;
     }
     private void Start()
@@ -43,18 +42,13 @@ public class DoorManager : MonoBehaviour
 
     public void teleport()
     {
-        Debug.Log("Teleport called");
-        Debug.Log("Door position is: " + doorPos);
         if (!gm.pinSolved) {
-            Debug.Log("Pin not solved, cant teleport");
             return;
         }
         if (gm.playerIsTeleporting) {
-            Debug.Log("teleporting already, cant teleport");
             return;
         }
         if (!gm.hasLeftDoorway) {
-            Debug.Log("player hasent left doorway");
             if (gm.whereToTeleportPlayer == doorPos)
             {
                 gm.whereToTeleportPlayer = toBeMoved;
@@ -88,12 +82,10 @@ public class DoorManager : MonoBehaviour
         {
             Debug.Log(doorPos.x+ " " +  doorPos.y);
             if (doorPos.x == thirdFloor.path[i].start.x && doorPos.y == thirdFloor.path[i].start.y) {
-                Debug.Log("They match, teleporting woohoo!");
                 toBeMoved = new Vector2(thirdFloor.path[i].end.x, thirdFloor.path[i].end.y);
                 gm.whereToTeleportPlayer = toBeMoved;
                 StartCoroutine(teleportPause());
             } else if (doorPos.x == thirdFloor.path[i].end.x && doorPos.y == thirdFloor.path[i].end.y) {
-                Debug.Log("They match, teleporting woohoo!");
                 toBeMoved = new Vector2(thirdFloor.path[i].start.x, thirdFloor.path[i].start.y);
                 gm.whereToTeleportPlayer = toBeMoved;
                 StartCoroutine(teleportPause());

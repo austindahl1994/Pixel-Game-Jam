@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6735872355698381693}
   - component: {fileID: 6735872355698381682}
+  - component: {fileID: 9011296937955912051}
+  - component: {fileID: 8645781331193753870}
   m_Layer: 0
   m_Name: MagnifyingGlass
   m_TagString: Untagged
@@ -85,6 +87,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &9011296937955912051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6735872355698381692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9038f5685ee75dc42acc31ff701a377b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!60 &8645781331193753870
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6735872355698381692}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.43840203, y: -0.43192905}
+      - {x: 0.47187608, y: -0.31230018}
+      - {x: 0.29234245, y: -0.1905671}
+      - {x: 0.12306662, y: -0.06992404}
+      - {x: 0.09509693, y: -0.09509723}
+      - {x: 0.05593938, y: -0.13145733}
+      - {x: 0.20975766, y: -0.30863833}
+      - {x: 0.26547378, y: -0.4207008}
+      - {x: 0.34657335, y: -0.46824268}
 --- !u!1 &6735872357025501090
 GameObject:
   m_ObjectHideFlags: 0
