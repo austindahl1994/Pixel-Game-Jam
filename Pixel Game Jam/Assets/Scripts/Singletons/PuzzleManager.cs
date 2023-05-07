@@ -9,12 +9,15 @@ public class PuzzleManager : MonoBehaviour
     GameManager gm;
     InputManager im;
     public GameObject puzzle;
+    public GameObject puzzleInt;
     public bool isPuzzlin;
+    public bool computersOff;
+    public GameObject[] gameObjects;
     private void Awake()
     {
         instance = this;
         isPuzzlin = false;
-
+        computersOff = false;
     }
 
     private void Start()
@@ -28,6 +31,7 @@ public class PuzzleManager : MonoBehaviour
         isPuzzlin = true;
         gm.player.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
         Debug.Log("Starting puzzle with name: " + puzzle.name);
+        swapCollider(puzzleInt);
         gm.playerBC.enabled = false;
         puzzle.gameObject.SetActive(true);
         puzzle.gameObject.transform.position = gm.player.transform.position;
@@ -37,9 +41,14 @@ public class PuzzleManager : MonoBehaviour
     public void endPuzzle() {
         if (!isPuzzlin) { return; }
         Debug.Log("Ending puzzle with name: " + puzzle.name);
+        swapCollider(puzzleInt);
         isPuzzlin = false;
         puzzle.gameObject.SetActive(false);
         gm.player.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         gm.playerBC.enabled = true;
+    }
+
+    public void swapCollider(GameObject puzzleInterabtable) { 
+        puzzleInterabtable.gameObject.GetComponent<BoxCollider2D>().enabled = !puzzleInterabtable.gameObject.GetComponent<BoxCollider2D>().enabled;
     }
 }

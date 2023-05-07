@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
         instance = this;
         globalMusicVolume = finalMediumValue;
         globalSFXVolume = finalMediumValue;
-        globalAmbienceVolume = finalMediumValue;
+        globalAmbienceVolume = 0.3f;
         mmAudioSource = gameObject.AddComponent<AudioSource>();
         ambAudioSource = gameObject.AddComponent<AudioSource>();
 
@@ -39,6 +39,7 @@ public class AudioManager : MonoBehaviour
             mainMusicClip = Resources.Load<AudioClip>("Audio/mainMusic");
         }
         playMainMusic();
+        playAmbienceMusic();
     }
 
     private void playMainMusic() {
@@ -51,9 +52,9 @@ public class AudioManager : MonoBehaviour
     private void playAmbienceMusic() {
         //after fade in for volume
         ambAudioSource.volume = globalAmbienceVolume;
-        ambAudioSource.clip = mainMusicClip;
-        mmAudioSource.loop = true;
-        mmAudioSource.Play();
+        ambAudioSource.clip = ambienceClip1;
+        ambAudioSource.loop = true;
+        ambAudioSource.Play();
     }
 
     private void setAmbienceClip(AudioClip tobeplayed) { 

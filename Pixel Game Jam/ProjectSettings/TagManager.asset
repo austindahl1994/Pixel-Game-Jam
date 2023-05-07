@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Canvas
+  - button
   layers:
   - Default
   - TransparentFX
@@ -65,6 +66,9 @@ TagManager:
     locked: 0
   - name: FG Objects
     uniqueID: 43601027
+    locked: 0
+  - name: Doorwayfront
+    uniqueID: 22073747
     locked: 0
   - name: PuzzleBG
     uniqueID: 2589502619

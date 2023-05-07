@@ -30,14 +30,18 @@ public class UIManager : MonoBehaviour
     public string para;
     public string noteName;
 
-    private TMP_Text textDate;
-    private TMP_Text textPara;
-    private TMP_Text textName;
+    [SerializeField] private TMP_Text textDate;
+    [SerializeField] private TMP_Text textPara;
+    [SerializeField] private TMP_Text textName;
 
     public float fadeDuration = 0.2f;
     public float fadeWaitTime = 0.05f;
     private bool uiOpen;
     private bool uiSettingsOpen;
+    public GameObject screenFader;
+
+    [SerializeField] private GameObject victoryImage;
+
     private void Awake()
     {
         instance = this;
@@ -64,20 +68,18 @@ public class UIManager : MonoBehaviour
         }
         mainMusicSlider.value = 5.0f;
         sfxSlider.value = 5.0f;
-        ambienceSlider.value = 5.0f;
+        ambienceSlider.value = 3.0f;
         textMusic.text = (mainMusicSlider.value * 10).ToString() + "%";
         textSFX.text = (sfxSlider.value * 10).ToString() + "%";
         textAmb.text = (ambienceSlider.value * 10).ToString() + "%";
         mainMusicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
         sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
         ambienceSlider.onValueChanged.AddListener(OnAmbienceSliderChanged);
-        textDate = noteScreen.transform.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        textPara = noteScreen.transform.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        textName = noteScreen.transform.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public IEnumerator FadeScreen()
     {
+        Debug.Log("Fade screen called");
         // Fade to black
         float t = 0.0f;
         while (t < fadeDuration)
@@ -111,6 +113,7 @@ public class UIManager : MonoBehaviour
     }
 
     public IEnumerator fadeOut() {
+        fadeDuration = 2.0f;
         float t = 0.0f;
         while (t < fadeDuration)
         {
@@ -119,6 +122,13 @@ public class UIManager : MonoBehaviour
             image.color = new Color(0.0f, 0.0f, 0.0f, alpha);
             yield return null;
         }
+        yield return new WaitForSeconds(1.0f);
+        victoryScreen();
+        yield return null;
+    }
+
+    private void victoryScreen() {
+        victoryImage.gameObject.SetActive(true);
     }
 
     public IEnumerator fadeIn() {
